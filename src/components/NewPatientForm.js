@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 
 function NewPatientForm() {
+  const [allSideEffects, setAllSideEffects] = useState([
+    "dizziness",
+    "nausea",
+    "somnambulism",
+    "memory",
+    "allergy",
+    "headache",
+  ]);
+  const [filteredEffects, setFilteredEffects] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     side_effects: [],
@@ -8,11 +17,22 @@ function NewPatientForm() {
   });
 
   const handleChange = (e) => {
-    // console.log(e.target.value);
-    const { name, value } = e.target;
+    const { name, value, localName } = e.target;
+    if (localName === "select") addSideEffect(value);
+
     setFormData({ ...formData, [name]: name === "name" ? value : [value] });
   };
   console.log("formData: ", formData);
+
+  const addSideEffect = (sideEffect) => {
+    console.log("adding sideEffect:", sideEffect);
+    const baseList =
+      filteredEffects.length > 0 ? filteredEffects : allSideEffects;
+    console.log("baseList: ", baseList);
+    const remaining = baseList.filter((effect) => effect !== sideEffect);
+    setFilteredEffects(remaining);
+  };
+
   const handleSubmit = () => {
     const configObj = {
       method: "POST",
@@ -52,6 +72,15 @@ function NewPatientForm() {
           <option value="allergy">Severe Allergic Reaction</option>
           <option value="headache">Headache</option>
         </select>
+        {filteredEffects.length > 0 ? (
+          <select onChange={handleChange}>
+            {filteredEffects.map((effect) => (
+              <option value={effect} key={effect}>
+                {effect.slice(0, 1).toUpperCase() + effect.slice(1)}
+              </option>
+            ))}
+          </select>
+        ) : null}
         <input type="submit" value="Add Patient" />
       </form>
     </>
