@@ -1,15 +1,20 @@
-import React from "react"
+import React from "react";
 
-function Header() {
-    return(
-        <header>
-            <div>
-                <img src="./images/hypnocil-logo.png"/>
-                <h1>Clinical Trials</h1>
-            </div>
-            <input id="search" type="text" placeholder="Search..."></input>
-        </header>
-    );
+function Header({ onSearch }) {
+  return (
+    <header>
+      <div>
+        <img src="./images/hypnocil-logo.png" />
+        <h1>Clinical Trials</h1>
+      </div>
+      <input
+        id="search"
+        type="text"
+        placeholder="Search..."
+        onChange={onSearch}
+      ></input>
+    </header>
+  );
 }
 
 export default Header;
