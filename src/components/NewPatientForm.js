@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function NewPatientForm() {
   const [allSideEffects, setAllSideEffects] = useState([
@@ -10,6 +10,7 @@ function NewPatientForm() {
     "headache",
   ]);
   const [filteredEffects, setFilteredEffects] = useState([]);
+  const [menusArray, setMenusArray] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     side_effects: [],
@@ -33,6 +34,13 @@ function NewPatientForm() {
     setFilteredEffects(remaining);
   };
 
+  useEffect(() => {
+    setMenusArray(
+      menusArray.length > 0 ? [...menusArray, renderMenus()] : [renderMenus()]
+    );
+  }, [filteredEffects]);
+
+  console.log("menusArray: ", menusArray);
   const handleSubmit = () => {
     const configObj = {
       method: "POST",
@@ -46,6 +54,18 @@ function NewPatientForm() {
       .then((r) => r.json())
       .then((data) => console.log(data));
   };
+
+  function renderMenus() {
+    return filteredEffects.length > 0 ? (
+      <select onChange={handleChange} key={Math.random()}>
+        {filteredEffects.map((effect) => (
+          <option value={effect} key={effect}>
+            {effect.slice(0, 1).toUpperCase() + effect.slice(1)}
+          </option>
+        ))}
+      </select>
+    ) : null;
+  }
 
   return (
     <>
@@ -72,15 +92,7 @@ function NewPatientForm() {
           <option value="allergy">Severe Allergic Reaction</option>
           <option value="headache">Headache</option>
         </select>
-        {filteredEffects.length > 0 ? (
-          <select onChange={handleChange}>
-            {filteredEffects.map((effect) => (
-              <option value={effect} key={effect}>
-                {effect.slice(0, 1).toUpperCase() + effect.slice(1)}
-              </option>
-            ))}
-          </select>
-        ) : null}
+        {menusArray}
         <input type="submit" value="Add Patient" />
       </form>
     </>
