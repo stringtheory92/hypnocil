@@ -67,6 +67,18 @@
         "Somnambulism",
         "Loss of Memory"
       ]
+    },
+    {
+      "name": "Barney",
+      "side_effects": [
+        "nausea",
+        "somnambulism",
+        "memory",
+        "allergy",
+        "headache"
+      ],
+      "deceased": false,
+      "id": 8
     }
   ]
 }

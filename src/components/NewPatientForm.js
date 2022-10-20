@@ -19,9 +19,14 @@ function NewPatientForm() {
 
   const handleChange = (e) => {
     const { name, value, localName } = e.target;
-    if (localName === "select") addSideEffect(value);
-
-    setFormData({ ...formData, [name]: name === "name" ? value : [value] });
+    if (localName === "select") {
+      addSideEffect(value);
+      setFormData({
+        ...formData,
+        side_effects: [...formData.side_effects, value],
+      });
+    } else
+      setFormData({ ...formData, [name]: name === "name" ? value : [value] });
   };
   console.log("formData: ", formData);
 
